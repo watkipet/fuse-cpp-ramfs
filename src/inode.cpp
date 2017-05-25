@@ -17,9 +17,6 @@
 #include <fuse/fuse_lowlevel.h>
 #endif
 #include <sys/xattr.h>
-#ifdef __LINUX__
-#include <attr/xattr.h>
-#endif
 
 #include "util.hpp"
 #include "inode.hpp"
@@ -69,10 +66,11 @@ int Inode::ReplySetAttr(fuse_req_t req, struct stat *attr, int to_set) {
         m_fuseEntryParam.attr.st_mtime = attr->st_mtime;
 #endif
     }
-    if (to_set & FUSE_SET_ATTR_CHGTIME) {
 #ifdef __APPLE__
+    if (to_set & FUSE_SET_ATTR_CHGTIME) {
         m_fuseEntryParam.attr.st_ctimespec = attr->st_ctimespec;
 #else
+    if (to_set & FUSE_SET_ATTR_CTIME) {
         m_fuseEntryParam.attr.st_ctime = attr->st_ctime;
 #endif
     }
@@ -90,7 +88,11 @@ int Inode::ReplySetAttr(fuse_req_t req, struct stat *attr, int to_set) {
 #endif /* __APPLE__ */
     
     // TODO: What do we do if this fails? Do we care? Log the event?
+#ifdef __APPLE__
     clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctimespec));
+#else
+    clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctime));
+#endif
     
     return fuse_reply_attr(req, &(m_fuseEntryParam.attr), 1.0);
 }
@@ -109,7 +111,11 @@ int Inode::SetXAttrAndReply(fuse_req_t req, const string &name, const void *valu
         
     } else {
         if (flags & XATTR_REPLACE) {
+#ifdef __APPLE__
             return fuse_reply_err(req, ENOATTR);
+#else
+            return fuse_reply_err(req, ENODATA);
+#endif
         }
     }
     
@@ -138,7 +144,11 @@ int Inode::SetXAttrAndReply(fuse_req_t req, const string &name, const void *valu
 
 int Inode::GetXAttrAndReply(fuse_req_t req, const string &name, size_t size, uint32_t position) {
     if (m_xattr.find(name) == m_xattr.end()) {
+#ifdef __APPLE__
         return fuse_reply_err(req, ENOATTR);
+#else
+        return fuse_reply_err(req, ENODATA);
+#endif
     }
     
     // The requestor wanted the size. TODO: How does position figure into this?
@@ -197,7 +207,11 @@ int Inode::ListXAttrAndReply(fuse_req_t req, size_t size) {
 int Inode::RemoveXAttrAndReply(fuse_req_t req, const string &name) {
     map<string, pair<void *, size_t> >::iterator it = m_xattr.find(name);
     if (it == m_xattr.end()) {
+#ifdef __APPLE__
         return fuse_reply_err(req, ENOATTR);
+#else
+        return fuse_reply_err(req, ENODATA);
+#endif
     }
     
     m_xattr.erase(it);
@@ -259,8 +273,14 @@ void Inode::Initialize(fuse_ino_t ino, mode_t mode, nlink_t nlink, gid_t gid, ui
     
     timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
+#ifdef __APPLE__
     m_fuseEntryParam.attr.st_atimespec = ts;
     m_fuseEntryParam.attr.st_ctimespec = ts;
     m_fuseEntryParam.attr.st_birthtimespec = ts;
     m_fuseEntryParam.attr.st_mtimespec = ts;
+#else
+    m_fuseEntryParam.attr.st_atime = ts;
+    m_fuseEntryParam.attr.st_ctime = ts;
+    m_fuseEntryParam.attr.st_mtime = ts;
+#endif
 }
