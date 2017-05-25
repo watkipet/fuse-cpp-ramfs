@@ -14,6 +14,7 @@ addons:
       - cmake
       - cmake-data
       - gettext
+      - util-linux
 
 before_install:
   util/travis-before_install.sh
