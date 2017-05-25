@@ -10,7 +10,7 @@
 #ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
 #else
-#include <fuse/fuse_lowlevel.h>
+#include <fuse3/fuse_lowlevel.h>
 #endif
 
 #include "util.hpp"
