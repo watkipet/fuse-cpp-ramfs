@@ -1,0 +1,26 @@
+.TH fuse-cpp-ramfs 1 "19 May 2017" "Peter Watkins" "Peter Watkins"
+.SH NAME
+fuse-cpp-ramfs An example RAM Filesysetem for using FUSE and written in C++.
+.SH SYNOPSIS
+fuse-cpp-ramfs
+.br
+.SH DESCRIPTION
+\fBfuse-cpp-ramfs\fP An example RAM Filesysetem for using FUSE and written in C++.
+\fBfuse-cpp-ramfs\fP is free software, and is designed for operation on POSIX
+operating systems.  Redistribution and/or modification
+is permitted under the terms of the Lesser GNU General Public License, Version 3,
+as published by the Free Software Foundation. 
+.PP
+\fBfuse-cpp-ramfs\fP is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+.SH ADDITIONAL INFORMATION
+The latest news and information regarding \fBfuse-cpp-ramfs\fP software is
+available through the official \fBfuse-cpp-ramfs\fP software web page located
+at: \fIhttp://www.github.com/watkipet/fuse-cpp-ramfs\fP.
+.SH AUTHORS
+.TP
+Peter Watkins <\fIwatkipet@gmail.com\fP>
+Creator, Lead Developer
+
