@@ -61,14 +61,14 @@ int Inode::ReplySetAttr(fuse_req_t req, struct stat *attr, int to_set) {
 #ifdef __APPLE__
         m_fuseEntryParam.attr.st_atimespec = attr->st_atimespec;
 #else
-        m_fuseEntryParam.attr.st_atime = attr->st_atime;
+        m_fuseEntryParam.attr.st_atim = attr->st_atim;
 #endif
     }
     if (to_set & FUSE_SET_ATTR_MTIME) {
 #ifdef __APPLE__
         m_fuseEntryParam.attr.st_mtimespec = attr->st_mtimespec;
 #else
-        m_fuseEntryParam.attr.st_mtime = attr->st_mtime;
+        m_fuseEntryParam.attr.st_mtim = attr->st_mtim;
 #endif
     }
 #ifdef __APPLE__
@@ -76,7 +76,7 @@ int Inode::ReplySetAttr(fuse_req_t req, struct stat *attr, int to_set) {
         m_fuseEntryParam.attr.st_ctimespec = attr->st_ctimespec;
 #else
     if (to_set & FUSE_SET_ATTR_CTIME) {
-        m_fuseEntryParam.attr.st_ctime = attr->st_ctime;
+        m_fuseEntryParam.attr.st_ctim = attr->st_ctim;
 #endif
     }
 #ifdef __APPLE__
@@ -96,7 +96,7 @@ int Inode::ReplySetAttr(fuse_req_t req, struct stat *attr, int to_set) {
 #ifdef __APPLE__
     clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctimespec));
 #else
-    clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctime));
+    clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctim));
 #endif
     
     return fuse_reply_attr(req, &(m_fuseEntryParam.attr), 1.0);
@@ -284,8 +284,8 @@ void Inode::Initialize(fuse_ino_t ino, mode_t mode, nlink_t nlink, gid_t gid, ui
     m_fuseEntryParam.attr.st_birthtimespec = ts;
     m_fuseEntryParam.attr.st_mtimespec = ts;
 #else
-    m_fuseEntryParam.attr.st_atime = ts;
-    m_fuseEntryParam.attr.st_ctime = ts;
-    m_fuseEntryParam.attr.st_mtime = ts;
+    m_fuseEntryParam.attr.st_atim = ts;
+    m_fuseEntryParam.attr.st_ctim = ts;
+    m_fuseEntryParam.attr.st_mtim = ts;
 #endif
 }
