@@ -58,8 +58,13 @@ int File::WriteAndReply(fuse_req_t req, const char *buf, size_t size, off_t off)
     }
     
     // TODO: What do we do if this fails? Do we care? Log the event?
+#ifdef __APPLE__
     clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctimespec));
     m_fuseEntryParam.attr.st_mtimespec = m_fuseEntryParam.attr.st_ctimespec;
+#else
+    clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_ctim));
+    m_fuseEntryParam.attr.st_mtim = m_fuseEntryParam.attr.st_ctim;
+#endif
     
     return fuse_reply_write(req, size);
 }
@@ -73,7 +78,11 @@ int File::ReadAndReply(fuse_req_t req, size_t size, off_t off) {
     // Update access time. TODO: This could get very intensive. Some
     // filesystems buffer this with options at mount time. Look into this.
     // TODO: What do we do if this fails? Do we care? Log the event?
+#ifdef __APPLE__
     clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_atimespec));
+#else
+    clock_gettime(CLOCK_REALTIME, &(m_fuseEntryParam.attr.st_atim));
+#endif
     
     // Handle reading past the file size as well as inside the size.
     size_t bytesRead = off + size > m_fuseEntryParam.attr.st_size ? m_fuseEntryParam.attr.st_size - off : size;
