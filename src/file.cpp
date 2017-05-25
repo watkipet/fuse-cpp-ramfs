@@ -8,7 +8,11 @@
 #include <vector>
 #include <queue>
 #include <map>
+#ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
+#else
+#include <fuse/fuse_lowlevel.h>
+#endif
 
 #include "util.hpp"
 #include "inode.hpp"

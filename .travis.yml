@@ -11,6 +11,7 @@ addons:
     packages:
       - cmake
       - cmake-data
+      - libfuse-dev
 
 matrix:
   include:

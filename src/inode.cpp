@@ -10,7 +10,11 @@
 #include <tuple>
 #include <unistd.h>
 #include <fcntl.h>
+#ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
+#else
+#include <fuse/fuse_lowlevel.h>
+#endif
 #include <sys/xattr.h>
 
 #include "util.hpp"

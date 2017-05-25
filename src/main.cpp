@@ -2,7 +2,11 @@
  *  @copyright 2016 Peter Watkins. All rights reserved.
  */
 
+#ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
+#else
+#include <fuse/fuse_lowlevel.h>
+#endif
 #include <iostream>
 #include <vector>
 #include <queue>

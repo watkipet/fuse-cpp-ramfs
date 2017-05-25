@@ -6,7 +6,11 @@
 #include <cerrno>
 #include <string>
 #include <map>
+#ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
+#else
+#include <fuse/fuse_lowlevel.h>
+#endif
 
 #include "inode.hpp"
 #include "special_inode.hpp"

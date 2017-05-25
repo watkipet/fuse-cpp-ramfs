@@ -10,7 +10,11 @@
 #include <stdlib.h>
 #include <cerrno>
 #include <cassert>
+#ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
+#else
+#include <fuse/fuse_lowlevel.h>
+#endif
 #include <unistd.h>
 
 #include "inode.hpp"
