@@ -13,7 +13,7 @@ addons:
       - cmake-data
 
 before_install:
-  util/install-fuse.sh
+  util/travis-before_install.sh
 
 matrix:
   include:
