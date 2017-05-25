@@ -1,0 +1,25 @@
+notifications:
+  email: false
+
+git:
+  depth: 3
+
+matrix:
+  include:
+    - os: linux
+      language: python
+      python: 3.5
+
+#    - os: osx
+#      language: python
+#      python: 3.5      
+
+install: 
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+    - cd ..
+
+#script:
+#    - python3 tests/test.py
