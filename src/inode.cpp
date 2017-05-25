@@ -8,6 +8,7 @@
 #include <cerrno>
 #include <map>
 #include <tuple>
+#include <cstring>
 #include <unistd.h>
 #include <fcntl.h>
 #ifdef __APPLE__
@@ -16,6 +17,9 @@
 #include <fuse/fuse_lowlevel.h>
 #endif
 #include <sys/xattr.h>
+#ifdef __LINUX__
+#include <attr/xattr.h>
+#endif
 
 #include "util.hpp"
 #include "inode.hpp"
@@ -52,17 +56,29 @@ int Inode::ReplySetAttr(fuse_req_t req, struct stat *attr, int to_set) {
         m_fuseEntryParam.attr.st_size = attr->st_size;
     }
     if (to_set & FUSE_SET_ATTR_ATIME) {
+#ifdef __APPLE__
         m_fuseEntryParam.attr.st_atimespec = attr->st_atimespec;
+#else
+        m_fuseEntryParam.attr.st_atime = attr->st_atime;
+#endif
     }
     if (to_set & FUSE_SET_ATTR_MTIME) {
+#ifdef __APPLE__
         m_fuseEntryParam.attr.st_mtimespec = attr->st_mtimespec;
+#else
+        m_fuseEntryParam.attr.st_mtime = attr->st_mtime;
+#endif
+    }
+    if (to_set & FUSE_SET_ATTR_CHGTIME) {
+#ifdef __APPLE__
+        m_fuseEntryParam.attr.st_ctimespec = attr->st_ctimespec;
+#else
+        m_fuseEntryParam.attr.st_ctime = attr->st_ctime;
+#endif
     }
 #ifdef __APPLE__
     if (to_set & FUSE_SET_ATTR_CRTIME) {
         m_fuseEntryParam.attr.st_birthtimespec = attr->st_birthtimespec;
-    }
-    if (to_set & FUSE_SET_ATTR_CHGTIME) {
-        m_fuseEntryParam.attr.st_ctimespec = attr->st_ctimespec;
     }
     // TODO: Can't seem to find this one.
 //    if (to_set & FUSE_SET_ATTR_BKUPTIME) {

@@ -8,6 +8,7 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <cstring>
 #ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
 #else
