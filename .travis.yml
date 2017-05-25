@@ -1,6 +1,8 @@
 notifications:
   email: false
 
+sudo: required
+
 git:
   depth: 3
   
