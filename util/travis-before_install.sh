@@ -3,7 +3,7 @@
 set -ex
 
 # pytest and meson
-sudo python3 -m pip install pytest meson
+sudo pip install pytest meson
 
 # ninja
 wget https://github.com/ninja-build/ninja/releases/download/v1.7.2/ninja-linux.zip
