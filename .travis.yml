@@ -1,8 +1,6 @@
 notifications:
   email: false
 
-sudo: required
-
 git:
   depth: 3
   
@@ -13,8 +11,7 @@ addons:
     packages:
       - cmake
       - cmake-data
-      - gettext
-      - util-linux
+      - libfuse-dev
 
 before_install:
   util/travis-before_install.sh

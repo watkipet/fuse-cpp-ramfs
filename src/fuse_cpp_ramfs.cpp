@@ -13,7 +13,7 @@
 #ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
 #else
-#include <fuse3/fuse_lowlevel.h>
+#include <fuse/fuse_lowlevel.h>
 #endif
 #include <unistd.h>
 

@@ -14,7 +14,7 @@
 #ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
 #else
-#include <fuse3/fuse_lowlevel.h>
+#include <fuse/fuse_lowlevel.h>
 #endif
 #include <sys/xattr.h>
 
@@ -24,6 +24,11 @@
 using namespace std;
 
 Inode::~Inode() {}
+
+/** Fix until FUSE 3 is available on all platforms. */
+#ifndef FUSE_SET_ATTR_CTIME
+#define FUSE_SET_ATTR_CTIME   (1 << 10)
+#endif
 
 int Inode::ReplyEntry(fuse_req_t req) {
     m_nlookup++;
