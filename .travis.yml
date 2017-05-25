@@ -11,7 +11,9 @@ addons:
     packages:
       - cmake
       - cmake-data
-      - libfuse-dev
+
+before_install:
+  travis/install-fuse.sh
 
 matrix:
   include:
