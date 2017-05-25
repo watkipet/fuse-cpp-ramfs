@@ -11,6 +11,7 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <cstring>
 
 #include "inode.hpp"
 #include "fuse_cpp_ramfs.hpp"
