@@ -20,11 +20,6 @@
 #include "fuse_cpp_ramfs.hpp"
 #include "file.hpp"
 
-//size_t File::Size() {
-//    return m_size;
-//}
-
-
 File::~File() {
     free(m_buf);
 }
