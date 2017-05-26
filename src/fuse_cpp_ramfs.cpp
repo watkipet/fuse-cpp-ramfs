@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <cerrno>
 #include <cassert>
+#include <cstring>
 #ifdef __APPLE__
 #include <osxfuse/fuse/fuse_lowlevel.h>
 #else
