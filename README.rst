@@ -19,9 +19,9 @@ Quick Run
 
 Requirements
 ============
-fuse-cpp-ramfs builds with CMake version 2.6 or greater.
+fuse-cpp-ramfs builds with CMake version 3.0 or greater.
 
-fuse-cpp-ramfs requires the libfuse2-1.0.1 (or later) 
+fuse-cpp-ramfs requires the libfuse2-2.9 (or later) 
 filesystem-in-userspace library and header files for successful 
 compilation.  libfuse is available
 at: 
