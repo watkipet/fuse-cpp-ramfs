@@ -21,7 +21,7 @@ private:
     static struct statvfs m_stbuf;
     
 public:
-    const static struct fuse_lowlevel_ops FuseOps;
+    static struct fuse_lowlevel_ops FuseOps;
     
 private:
     static fuse_ino_t RegisterInode(Inode *inode_p, mode_t mode, nlink_t nlink, gid_t gid, uid_t uid);

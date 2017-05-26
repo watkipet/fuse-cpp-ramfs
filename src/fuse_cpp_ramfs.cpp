@@ -46,63 +46,61 @@ bool FuseRamFs::m_reclaimingInodes = false;
 /**
  The constants defining the capabilities and sizes of the filesystem.
  */
-struct statvfs FuseRamFs::m_stbuf = {
-    .f_bsize   = Inode::BufBlockSize,	/**< File system block size */
-    .f_frsize  = Inode::BufBlockSize,	/**< Fundamental file system block size */
-    .f_blocks  = kTotalBlocks,          /**< Blocks on FS in units of f_frsize */
-    .f_bfree   = kTotalBlocks,          /**< Free blocks */
-    .f_bavail  = kTotalBlocks,          /**< Blocks available to non-root */
-    .f_files   = kTotalInodes,          /**< Total inodes */
-    .f_ffree   = kTotalInodes,          /**< Free inodes */
-    .f_favail  = kTotalInodes,          /**< Free inodes for non-root */
-    .f_fsid    = kFilesystemId,         /**< Filesystem ID */
-    .f_flag    = 0,                     /**< Bit mask of values */
-    .f_namemax = kMaxFilenameLength     /**< Max file name length */
-};
+struct statvfs FuseRamFs::m_stbuf = {};
 
 
 /**
  All the supported filesystem operations mapped to object-methods.
  */
-const struct fuse_lowlevel_ops FuseRamFs::FuseOps = {
-    .init        = FuseRamFs::FuseInit,
-    .destroy     = FuseRamFs::FuseDestroy,
-    .lookup      = FuseRamFs::FuseLookup,
-    .forget      = FuseRamFs::FuseForget,
-    .getattr     = FuseRamFs::FuseGetAttr,
-    .setattr     = FuseRamFs::FuseSetAttr,
-    .readlink    = FuseRamFs::FuseReadLink,
-    .mknod       = FuseRamFs::FuseMknod,
-    .mkdir       = FuseRamFs::FuseMkdir,
-    .unlink      = FuseRamFs::FuseUnlink,
-    .rmdir       = FuseRamFs::FuseRmdir,
-    .symlink     = FuseRamFs::FuseSymlink,
-    .rename      = FuseRamFs::FuseRename,
-    .link        = FuseRamFs::FuseLink,
-    .open        = FuseRamFs::FuseOpen,
-    .read        = FuseRamFs::FuseRead,
-    .write       = FuseRamFs::FuseWrite,
-    .flush       = FuseRamFs::FuseFlush,
-    .release     = FuseRamFs::FuseRelease,
-    .fsync       = FuseRamFs::FuseFsync,
-    .opendir     = FuseRamFs::FuseOpenDir,
-    .readdir     = FuseRamFs::FuseReadDir,
-    .releasedir  = FuseRamFs::FuseReleaseDir,
-    .fsyncdir    = FuseRamFs::FuseFsyncDir,
-    .statfs      = FuseRamFs::FuseStatfs,
-    .setxattr    = FuseRamFs::FuseSetXAttr,
-    .getxattr    = FuseRamFs::FuseGetXAttr,
-    .listxattr   = FuseRamFs::FuseListXAttr,
-    .removexattr = FuseRamFs::FuseRemoveXAttr,
-    .access      = FuseRamFs::FuseAccess,
-    .create      = FuseRamFs::FuseCreate,
-    .getlk       = FuseRamFs::FuseGetLock
-};
+struct fuse_lowlevel_ops FuseRamFs::FuseOps = {};
 
 
 FuseRamFs::FuseRamFs()
 {
-
+    FuseOps.init        = FuseRamFs::FuseInit;
+    FuseOps.destroy     = FuseRamFs::FuseDestroy;
+    FuseOps.lookup      = FuseRamFs::FuseLookup;
+    FuseOps.forget      = FuseRamFs::FuseForget;
+    FuseOps.getattr     = FuseRamFs::FuseGetAttr;
+    FuseOps.setattr     = FuseRamFs::FuseSetAttr;
+    FuseOps.readlink    = FuseRamFs::FuseReadLink;
+    FuseOps.mknod       = FuseRamFs::FuseMknod;
+    FuseOps.mkdir       = FuseRamFs::FuseMkdir;
+    FuseOps.unlink      = FuseRamFs::FuseUnlink;
+    FuseOps.rmdir       = FuseRamFs::FuseRmdir;
+    FuseOps.symlink     = FuseRamFs::FuseSymlink;
+    FuseOps.rename      = FuseRamFs::FuseRename;
+    FuseOps.link        = FuseRamFs::FuseLink;
+    FuseOps.open        = FuseRamFs::FuseOpen;
+    FuseOps.read        = FuseRamFs::FuseRead;
+    FuseOps.write       = FuseRamFs::FuseWrite;
+    FuseOps.flush       = FuseRamFs::FuseFlush;
+    FuseOps.release     = FuseRamFs::FuseRelease;
+    FuseOps.fsync       = FuseRamFs::FuseFsync;
+    FuseOps.opendir     = FuseRamFs::FuseOpenDir;
+    FuseOps.readdir     = FuseRamFs::FuseReadDir;
+    FuseOps.releasedir  = FuseRamFs::FuseReleaseDir;
+    FuseOps.fsyncdir    = FuseRamFs::FuseFsyncDir;
+    FuseOps.statfs      = FuseRamFs::FuseStatfs;
+    FuseOps.setxattr    = FuseRamFs::FuseSetXAttr;
+    FuseOps.getxattr    = FuseRamFs::FuseGetXAttr;
+    FuseOps.listxattr   = FuseRamFs::FuseListXAttr;
+    FuseOps.removexattr = FuseRamFs::FuseRemoveXAttr;
+    FuseOps.access      = FuseRamFs::FuseAccess;
+    FuseOps.create      = FuseRamFs::FuseCreate;
+    FuseOps.getlk       = FuseRamFs::FuseGetLock;
+    
+    m_stbuf.f_bsize   = Inode::BufBlockSize;   /* File system block size */
+    m_stbuf.f_frsize  = Inode::BufBlockSize;   /* Fundamental file system block size */
+    m_stbuf.f_blocks  = kTotalBlocks;          /* Blocks on FS in units of f_frsize */
+    m_stbuf.f_bfree   = kTotalBlocks;          /* Free blocks */
+    m_stbuf.f_bavail  = kTotalBlocks;          /* Blocks available to non-root */
+    m_stbuf.f_files   = kTotalInodes;          /* Total inodes */
+    m_stbuf.f_ffree   = kTotalInodes;          /* Free inodes */
+    m_stbuf.f_favail  = kTotalInodes;          /* Free inodes for non-root */
+    m_stbuf.f_fsid    = kFilesystemId;         /* Filesystem ID */
+    m_stbuf.f_flag    = 0;                     /* Bit mask of values */
+    m_stbuf.f_namemax = kMaxFilenameLength;    /* Max file name length */
 }
 
 FuseRamFs::~FuseRamFs()
@@ -121,6 +119,7 @@ FuseRamFs::~FuseRamFs()
 void FuseRamFs::FuseInit(void *userdata, struct fuse_conn_info *conn)
 {
     m_reclaimingInodes = false;
+    
     m_stbuf.f_bfree  = m_stbuf.f_blocks;	/* Free blocks */
     m_stbuf.f_bavail = m_stbuf.f_blocks;	/* Blocks available to non-root */
     m_stbuf.f_ffree  = m_stbuf.f_files;	/* Free inodes */
