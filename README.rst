@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/watkipet/fuse-cpp-ramfs.svg?branch=master
+    :target: https://travis-ci.org/watkipet/fuse-cpp-ramfs
+
 ======================================================================
 fuse-cpp-ramfs: An example RAM filesystem using FUSE written in C++
 ======================================================================
