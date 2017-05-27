@@ -12,6 +12,7 @@ addons:
       - cmake
       - cmake-data
       - libfuse-dev
+      - fuse-utils
 
 before_install:
   util/travis-before_install.sh
