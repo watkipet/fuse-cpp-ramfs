@@ -15,6 +15,7 @@ addons:
       - cmake-data
       - libfuse-dev
       - fuse-utils
+      - ghostscript
 
 before_install:
   util/travis-before_install.sh
