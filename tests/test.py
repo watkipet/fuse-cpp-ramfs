@@ -3,11 +3,17 @@ from pathlib import Path
 import subprocess
 import os
 import sys
-import shutil
 import time
+import errno
 
-shutil.rmtree('mnt/fuse-cpp-ramfs')
-os.makedirs('mnt/fuse-cpp-ramfs');
+def make_sure_path_exists(path):
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
+
+make_sure_path_exists('mnt/fuse-cpp-ramfs');
 
 child = subprocess.Popen(['src/fuse-cpp-ramfs',
                           'mnt/fuse-cpp-ramfs'])
