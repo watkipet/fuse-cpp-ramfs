@@ -25,7 +25,7 @@ if sys.platform == 'darwin':
   subprocess.run(['umount',
                   'mnt/fuse-cpp-ramfs'])
 else:
-  subprocess.run(['fusermount -u',
+  subprocess.run(['fusermount', '-u',
                   'mnt/fuse-cpp-ramfs'])
 
 child.wait()
