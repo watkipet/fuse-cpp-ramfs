@@ -34,4 +34,5 @@ install:
     - cd ..
 
 script:
-    - python3 tests/test.py
+    - cd build
+    - python3 ../tests/test.py

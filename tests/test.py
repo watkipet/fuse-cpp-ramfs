@@ -3,17 +3,24 @@ from pathlib import Path
 import subprocess
 import os
 import sys
+import shutil
+import time
 
-rdir = Path(__file__).parents[1]
+shutil.rmtree('mnt/fuse-cpp-ramfs')
+os.makedirs('mnt/fuse-cpp-ramfs');
 
-print(rdir)
+child = subprocess.Popen(['src/fuse-cpp-ramfs',
+                          'mnt/fuse-cpp-ramfs'])
 
-os.mkdir(str(rdir/'mnt/fuse-cpp-ramfs'));
+# If you unmount too soon, the mountpoint won't be available.
+time.sleep(1)
 
-child = subprocess.Popen([str(rdir/'build/src/fuse-cpp-ramfs'),
-                         str(rdir/'mnt/fuse-cpp-ramfs')])
+if sys.platform == 'darwin':
+  subprocess.run(['umount',
+                  'mnt/fuse-cpp-ramfs'])
+else:
+  subprocess.run(['fusermount -u',
+                  'mnt/fuse-cpp-ramfs'])
 
-subprocess.run(['fusermount -u',
-                str(rdir/'mnt/fuse-cpp-ramfs')])
-
+child.wait()
 sys.exit(child.returncode)
