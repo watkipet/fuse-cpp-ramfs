@@ -33,5 +33,5 @@ install:
     - make
     - cd ..
 
-#script:
-#    - python3 tests/test.py
+script:
+    - python3 tests/test.py
