@@ -2,6 +2,7 @@
 from pathlib import Path
 import subprocess
 import os
+import sys
 
 rdir = Path(__file__).parents[1]
 
@@ -15,4 +16,4 @@ child = subprocess.Popen([str(rdir/'build/src/fuse-cpp-ramfs'),
 subprocess.run(['fusermount -u',
                 str(rdir/'mnt/fuse-cpp-ramfs')])
 
-return child.returncode
+sys.exit(child.returncode)
