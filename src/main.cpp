@@ -52,7 +52,7 @@ int main(int argc, const char * argv[]) {
     
     if (fuse_parse_cmdline(&args, &mountpoint, NULL, NULL) != -1) {
         if (mountpoint == NULL) {
-            cerr << "USAGE: fuse_cpp_ramfs MOUNTPOINT" << endl;
+            cerr << "USAGE: fuse-cpp-ramfs MOUNTPOINT" << endl;
         } else if ((ch = fuse_mount(mountpoint, &args)) != NULL) {
             struct fuse_session *se;
             
